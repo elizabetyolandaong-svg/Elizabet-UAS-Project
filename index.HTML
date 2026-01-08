@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elizabet Web Shop</title>
-<BODY background="foto-saya.jpg">
-
+<body background="foto-saya.jpg">
 <style>
 :root{
   --pink:#f6c1d1;
@@ -21,10 +20,12 @@
 
 body{
   margin:0;
-  min-height:100vh;
-  padding-top:80px;
-  padding-bottom:60px;
+  font-family:Segoe UI, Tahoma, sans-serif;
+  background-image: url("foto-saya.jpg");
+  padding-top:90px;   /* ruang header */
+  padding-bottom:70px; /* ruang footer */
 }
+
 
 footer{
   margin-top:auto;
@@ -34,7 +35,7 @@ footer{
 
 /* ===== HEADER ===== */
 header{
-  background:rgba(255,255,255,.85);
+  background:PINK(255,255,255,.85);
   backdrop-filter:blur(10px);
   padding:14px 22px;
   display:flex;
@@ -46,14 +47,17 @@ header{
 header{
   position:fixed;
   top:0;
-  left:0;
   width:100%;
-  z-index:1000;
-
-  background:rgba(255,255,255,.85);
-  backdrop-filter:blur(10px);
-  box-shadow:0 8px 20px rgba(0,0,0,.1);
+  z-index:999;
 }
+
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  text-align:center;
+}
+
 .welcome-wrapper{
   flex:1;
   overflow:hidden;
@@ -133,15 +137,42 @@ nav ul{
   padding:0;
 }
 
-nav a{
-  text-decoration:none;
-  font-weight:600;
-  color:var(--UNGU);
-  cursor:pointer;
+/* BUBBLE NAV */
+nav a {
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  color: #4a2c3a;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: color 0.3s ease;
 }
 
-nav a:hover{
-  color:var(--ungu);
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(180,140,200,0.4); /* warna bubble */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  z-index: -1;
+}
+
+nav a.active::after,
+nav a:hover::after {
+  width: 160%;
+  height: 400%;
+  opacity: 1;
+}
+
+nav a:hover {
+  color: white;
 }
 
  @media (max-width:768px){
@@ -168,9 +199,16 @@ nav a:hover{
   }
 
   .products{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:16px;
+}
+@media(max-width:768px){
+  .products{
     grid-template-columns:repeat(2,1fr);
-    gap:12px;
   }
+}
+
 
   .card{
     padding:10px;
@@ -276,26 +314,30 @@ h1{
   margin-top:20px;
 }
 
-.card{
-  background:#f6c1d1;
-  border-radius:16px;
-  padding:12px;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+.card {
+  background: rgba(246, 193, 209, 0.6); /* pink transparan */
+  border: 2px solid rgba(180, 140, 200, 0.6); /* ungu lembut */
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.card img{
-  width:100%;
-  border-radius:12px;
+.card img {
+  width: 100%;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
-.card h3{
-  margin:10px 0 4px;
+.card:hover img {
+  transform: scale(1.05); /* gambar zoom */
 }
 
-.card p{
-  color:var(--coklat);
-  font-weight:600;
+.card:hover {
+  transform: translateY(-5px); /* card sedikit melayang */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
 
@@ -352,6 +394,12 @@ tbody tr:nth-child(even){
 #profil {
   color: #4a2c3a;
 }
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(160px,1fr));
+  gap:16px;
+  margin-top:20px;
+}
 
 
 
@@ -366,7 +414,7 @@ footer{
   justify-content:center;
   align-items:center;
 
-  background:rgba(255,255,255,.85);
+  background:PINK(255,255,255,.85);
   backdrop-filter:blur(10px);
 
   font-size:13px;
@@ -381,11 +429,14 @@ footer{
 
 /* ===== RESPONSIVE HP ===== */
 @media (max-width:768px){
-  header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
+  
+  header {
+  padding: 8px 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
 
   nav ul{
     flex-direction:column;
@@ -461,6 +512,7 @@ button.submit:hover {
 }
 
 
+
 }
 </style>
 </head>
@@ -469,7 +521,7 @@ button.submit:hover {
 
 <header>
   <div class="brand">
-    <img src="logo.jpeg">
+    <img src="logo.jpg">
     <span>Elizabet Web Shop</span>
   </div>
   <div class="welcome-text">
@@ -478,10 +530,16 @@ button.submit:hover {
 
   <nav>
   <ul>
-    <li><a onclick="showPage('home')">Home</a></li>
-    <li><a onclick="showPage('transaksi')">Transaction</a></li>
-    <li><a onclick="showPage('profil')">Profile</a></li>
-    <li><a onclick="showPage('login')">Login</a></li>
+    <nav>
+  <ul>
+    <li><a onclick="showPage('home', this)">Home</a></li>
+    <li><a onclick="showPage('transaksi', this)">Transaction</a></li>
+    <li><a onclick="showPage('profil', this)">Profile</a></li>
+    <li><a onclick="showPage('login', this)">Login</a></li>
+  </ul>
+</nav>
+
+
   </ul>
 </nav>
 
@@ -490,11 +548,28 @@ button.submit:hover {
 </header>
 
 <!-- HOME -->
+ 
 <section id="home" class="active">
   <h1 data-id="Beranda" data-en="Home">Beranda</h1>
+  <B><strong>Petunjuk Penggunaan Web:</strong> 
+  <BR>
+    <br>
+    Home: Untuk melihat dan menjelajahi semua barang yang tersedia.
+    <BR>
+      <br>
+      Login: Masukkan username dan password yang tersedia agar bisa mengakses halaman Transaksi. 
+      <BR>
+        <br>
+       Transaksi: Isilah data dengan lengkap dan vali
+       <BR>d, termasuk kode barang, nama pembeli, kontak, harga, dan jumlah. 
+       <BR>
+        Profil: Halaman ini berisi deskripsi singkat tentang Elizabet Web Shop kami.</B>
+  
     <H1>SELAMAT DATANG DI EWS! DI BAWAH INI ADALAH KOLEKSI PRODUK KAMI :) </H1>
-  </p>
-  <HR>
+  
+  <hr width="100%" size="6" color="pink">
+  
+    <hr>
     <B><CENTER>HIJAB STYLE</CENTER></B>
     <HR>
 
@@ -662,6 +737,9 @@ button.submit:hover {
         <label>Kode Barang</label>
         <input type="text" id="kode" placeholder="Contoh: EWSHIJ1">
       </div>
+      <label>Size</label>
+      <input type="text" id="size" placeholder="L/XL/XXL">
+      </div>
       <div class="field">
         <label>Nama Pembeli</label>
         <input type="text" id="nama" placeholder="Nama lengkap Anda">
@@ -692,6 +770,7 @@ button.submit:hover {
       <thead>
         <tr>
           <th>Kode</th>
+          <th>Size</th>
           <th>Nama</th>
           <th>Kontak</th>
           <th>Harga</th>
@@ -718,7 +797,7 @@ button.submit:hover {
 
 
 <!-- PROFIL -->
-<section id="profil" class="active">
+<section id="profil">
   <h1 data-id="Profil Elizabet Web Shop" data-en="Elizabet Web Shop Profile">
     Profil Elizabet Web Shop
   </h1>
@@ -781,7 +860,6 @@ Dosen Pemrograman Web 1
   // daftar username & password
   const users = [
     { username: "ewscust", password: "lgbycust12" },
-    { username: "customer", password: "logbycust21" }
   ];
 
   // fungsi login
@@ -825,9 +903,7 @@ Dosen Pemrograman Web 1
  <button class="submit" onclick="login()">Login</button>
  <p>note: untuk login gunakan username dan password dibawah ini</p>
  
- <h3>username 1: "ewscust", password: "lgbycust12" 
-  <br>
-     username 2: "customer", password: "logbycust21" </h3>
+ <h3><CENTER>username : "ewscust", password: "lgbycust12" </CENTER>
 </section>
 
 
@@ -837,30 +913,37 @@ Dosen Pemrograman Web 1
 
 <script>
 function showPage(id){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('section').forEach(s=>{
+    s.classList.remove('active');
+  });
+
   document.getElementById(id).classList.add('active');
 }
+</script>
 
-function simpan(){
-  let k=kode.value,n=nama.value,c=kontak.value,h=harga.value,j=jumlah.value;
-  if(!k||!n||!c||!h||!j){
-    alert('Masukkan Data Yang Lengkap!');
-    return;
-  }
 
-  data.innerHTML+=`
-    <tr>
-      <td>${k}</td>
-      <td>${n}</td>
-      <td>${c}</td>
-      <td>${h}</td>
-      <td>${j}</td>
-    </tr>`;
-}
+
+    
+
 
 
 </script>
 <script>
+  function showPage(id, el){
+  document.querySelectorAll('section').forEach(s=>{
+    s.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+
+  // reset nav
+  document.querySelectorAll('nav a').forEach(a=>{
+    a.classList.remove('active');
+  });
+
+  // aktifkan bubble
+  el.classList.add('active');
+}
+
 function showPage(id){
   document.querySelectorAll('section')
     .forEach(s=>s.classList.remove('active'));
@@ -877,6 +960,7 @@ let grandTotal = 0; // total keseluruhan
 
 function simpan(){
   let k = kode.value,
+      s = size.value,
       n = nama.value,
       c = kontak.value,
       h = parseInt(harga.value),
@@ -893,6 +977,7 @@ function simpan(){
   data.innerHTML += `
     <tr>
       <td>${k}</td>
+      <td>${s}</td>
       <td>${n}</td>
       <td>${c}</td>
       <td>${h}</td>
@@ -927,6 +1012,37 @@ function login(){
     alert("Username atau password salah!");
   }
 }
+// BAGIAN LOGIN SEBELUM TRANSAKSI
+let loggedIn = false;
+
+function login(){
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+  const users = [
+    { username: "ewscust", password: "lgbycust12" },
+    { username: "customer", password: "logbycust21" }
+  ];
+
+  const user = users.find(user => user.username === u && user.password === p);
+  if(user){
+    alert("Login berhasil! Selamat datang " + u);
+    loggedIn = true;
+    showPage('home'); // otomatis balik ke home
+  } else {
+    alert("Username atau password salah!");
+  }
+}
+
+function showPage(id){
+  if(id === 'transaksi' && !loggedIn){
+    alert("Silakan login dulu sebelum mengakses transaksi!");
+    showPage('login');
+    return;
+  }
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
 
 </script>
 
